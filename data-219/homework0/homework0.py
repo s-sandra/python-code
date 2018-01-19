@@ -12,10 +12,13 @@ catch_rate = poke_species.capture_rate
 catch_rate_hist = catch_rate.plot(kind='hist', bins=13, title='Pokemon Capture Rate')
 catch_rate_hist.set_xlabel("Capture Rate")
 catch_rate_hist.set_ylabel("Capture Rate Frequency")
-plt.close()
 
 plt.scatter(hatch_time, catch_rate)
 plt.title('Pokemon Gestation Time and Capture Rate')
 plt.xlabel("Gestation Time")
 plt.ylabel("Capture Rate")
-plt.show()
+plt.close()
+
+dresses_excel = pd.ExcelFile("Attribute DataSet.xlsx")
+dresses = dresses_excel.parse("Sheet1")
+#dresses.groupby("SleeveLength")
