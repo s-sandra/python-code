@@ -23,6 +23,7 @@ dresses_excel = pd.ExcelFile("Attribute DataSet.xlsx")
 dresses = dresses_excel.parse("Sheet1")
 dresses.Season = dresses.Season.str.title()
 dresses.SleeveLength = dresses.SleeveLength.str.lower()
+dresses.Price = dresses.Price.str.title()
 
 dresses = dresses.replace("capsleeves","cap-sleeves")
 dresses = dresses.replace("halfsleeve","half")
@@ -38,10 +39,22 @@ dresses = dresses.replace("urndowncollor","turndowncollar")
 dresses = dresses. replace("Automn","Autumn")
 dresses.groupby("SleeveLength").Season.value_counts()
 
+price_by_rating = dresses[["Price","Rating"]]
+price_by_rating.boxplot(by="Price")
+plt.title("Clothing Price Range vs Rating")
+plt.xlabel("Price Range")
+plt.ylabel("Rating")
+plt.suptitle("")
+plt.close()
+
 personality_scores = pd.read_csv("data.csv",index_col=1)
 personality_scores.gender = personality_scores.gender.replace(1,"male")
 personality_scores.gender = personality_scores.gender.replace(2,"female")
 scores_by_gender = personality_scores[["gender","score"]]
 scores_by_gender = scores_by_gender[(scores_by_gender.gender == "female") | (scores_by_gender.gender == "male")]
 scores_by_gender.boxplot(by="gender")
+plt.title("Narcissism Score Based On Gender")
+plt.xlabel("Gender")
+plt.ylabel("Score")
+plt.suptitle("")
 plt.show()
