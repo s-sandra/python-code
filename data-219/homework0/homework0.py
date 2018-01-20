@@ -37,3 +37,11 @@ dresses = dresses.replace("turndowncollor","turndowncollar")
 dresses = dresses.replace("urndowncollor","turndowncollar")
 dresses = dresses. replace("Automn","Autumn")
 dresses.groupby("SleeveLength").Season.value_counts()
+
+personality_scores = pd.read_csv("data.csv",index_col=1)
+personality_scores.gender = personality_scores.gender.replace(1,"male")
+personality_scores.gender = personality_scores.gender.replace(2,"female")
+scores_by_gender = personality_scores[["gender","score"]]
+scores_by_gender = scores_by_gender[(scores_by_gender.gender == "female") | (scores_by_gender.gender == "male")]
+scores_by_gender.boxplot(by="gender")
+plt.show()
