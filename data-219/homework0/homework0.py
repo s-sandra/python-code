@@ -47,7 +47,7 @@ plt.ylabel("Rating")
 plt.suptitle("")
 plt.close()
 
-personality_scores = pd.read_csv("data.csv",index_col=1)
+personality_scores = pd.read_csv("data.csv")
 personality_scores.gender = personality_scores.gender.replace(1,"male")
 personality_scores.gender = personality_scores.gender.replace(2,"female")
 scores_by_gender = personality_scores[["gender","score"]]
@@ -57,4 +57,14 @@ plt.title("Narcissism Score Based On Gender")
 plt.xlabel("Gender")
 plt.ylabel("Score")
 plt.suptitle("")
+plt.close()
+
+age_errors = personality_scores[(personality_scores.age > 100) | (personality_scores.age < 9)].index
+purged_scores = personality_scores
+purged_scores.age = purged_scores.age.drop(age_errors)
+
+plt.scatter(purged_scores.age,purged_scores.score,s=5)
+plt.title("Narcissism Score and Age")
+plt.xlabel("Age")
+plt.ylabel("Score")
 plt.show()
