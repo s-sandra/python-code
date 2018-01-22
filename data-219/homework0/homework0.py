@@ -24,6 +24,7 @@ dresses = dresses_excel.parse("Sheet1")
 dresses.Season = dresses.Season.str.title()
 dresses.SleeveLength = dresses.SleeveLength.str.lower()
 dresses.Price = dresses.Price.str.title()
+dresses.Style = dresses.Style.str.lower()
 
 dresses = dresses.replace("capsleeves","cap-sleeves")
 dresses = dresses.replace("halfsleeve","half")
@@ -37,7 +38,15 @@ dresses = dresses.replace("thressqatar","threequarter")
 dresses = dresses.replace("turndowncollor","turndowncollar")
 dresses = dresses.replace("urndowncollor","turndowncollar")
 dresses = dresses. replace("Automn","Autumn")
+
 dresses.groupby("SleeveLength").Season.value_counts()
+
+top_styles = dresses.Style.value_counts().iloc[0:10]
+top_styles.plot(kind="bar", title="Ten Most Common Dress Styles")
+plt.xlabel("Dress Styles")
+plt.ylabel("Frequency of Dress Style")
+plt.tight_layout()
+plt.show()
 
 price_by_rating = dresses[["Price","Rating"]]
 price_by_rating.boxplot(by="Price")
@@ -67,4 +76,13 @@ plt.scatter(purged_scores.age,purged_scores.score,s=5)
 plt.title("Narcissism Score and Age")
 plt.xlabel("Age")
 plt.ylabel("Score")
-plt.show()
+plt.close()
+
+time_errors = personality_scores[personality_scores.elapse > 1200].index
+purged_scores.elapse = purged_scores.elapse.drop(time_errors)
+purged_scores.elapse = purged_scores.elapse / 60
+plt.scatter(purged_scores.score,purged_scores.elapse,s=5)
+plt.title("Narcissism Score and Time Taken")
+plt.xlabel("Score")
+plt.ylabel("Time (mins)")
+plt.close()
