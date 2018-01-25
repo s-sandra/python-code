@@ -80,6 +80,17 @@ plt.xlabel("Age")
 plt.ylabel("Score")
 plt.close()
 
+purged_scores.age = purged_scores.age >= 65 # true for old, false for young
+purged_scores.age = purged_scores.age.replace(True, "old")
+purged_scores.age = purged_scores.age.replace(False, "young")
+scores_by_age = purged_scores[["age","score"]]
+scores_by_age.boxplot(by="age",notch=True)
+plt.title("Narcissism Score Based On Age")
+plt.xlabel("Age")
+plt.ylabel("Score")
+plt.suptitle("")
+plt.close()
+
 time_errors = personality_scores[personality_scores.elapse > 1200].index
 purged_scores.elapse = purged_scores.elapse.drop(time_errors)
 purged_scores.elapse = purged_scores.elapse / 60
