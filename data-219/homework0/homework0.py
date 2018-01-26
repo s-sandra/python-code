@@ -94,8 +94,20 @@ plt.close()
 time_errors = personality_scores[personality_scores.elapse > 1200].index
 purged_scores.elapse = purged_scores.elapse.drop(time_errors)
 purged_scores.elapse = purged_scores.elapse / 60
+
 plt.scatter(purged_scores.score,purged_scores.elapse,s=5)
 plt.title("Narcissism Score and Time Taken")
 plt.xlabel("Score")
 plt.ylabel("Time (mins)")
 plt.close()
+
+purged_scores.score = purged_scores.score > 15 # true for high, false for low
+purged_scores.score = purged_scores.score.replace(True, "high")
+purged_scores.score = purged_scores.score.replace(False, "low")
+scores_by_time = purged_scores[["elapse","score"]]
+scores_by_time.boxplot(by="score",notch=True)
+plt.title("Completion Time Based On NPI Score")
+plt.xlabel("Narcissism Score")
+plt.ylabel("Time Taken (mins)")
+plt.suptitle("")
+plt.show()
