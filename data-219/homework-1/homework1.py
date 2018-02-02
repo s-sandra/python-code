@@ -71,3 +71,19 @@ plt.scatter(salaries, taxes,s=2)
 plt.close()
 
 print("\nSalaries and taxes:\n" + printPearsonTest(salaries, taxes))
+
+# length 1935, with mean of 50 mph, standard deviation of 20, with speeds below 0, above 100 removed
+accident_speeds = np.random.normal(15,5,1935).clip(0,100)
+
+speeds = np.array([[50, 1],
+                   [10, 1]])
+costs = np.array([[5000]
+                 , [500]])
+solution = np.linalg.solve(speeds, costs)
+
+damages = accident_speeds * solution[0] + solution[1] + np.random.normal(0,1000,1935)
+
+plt.scatter(accident_speeds, damages, s=2)
+# plt.show()
+plt.close()
+print("\nAccident speeds and damages:\n" + printPearsonTest(accident_speeds, damages))
