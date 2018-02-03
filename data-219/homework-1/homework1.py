@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats.stats
+import pandas as pd
 
 # length 10000, with mean of 3, standard deviation of .5, and song lengths below 0.5 and above 10 removed.
 song_lengths = np.random.normal(3,.5,10000).clip(0.5,10)
@@ -87,3 +88,33 @@ plt.scatter(accident_speeds, damages, s=2)
 # plt.show()
 plt.close()
 print("\nAccident speeds and damages:\n" + printPearsonTest(accident_speeds, damages))
+
+# array of college students where 15% UMW, 38% JMU, 6% Richmond and 41% VATech
+university = np.random.choice(["UMW", "JMU", "Richmond", "VATech"], size=8932, p=[.15,.38,.06,.41])
+
+# array of college mascots perfectly correlated with university array.
+mascot = np.where(university=="UMW","eagle", np.where(university=="JMU", "duke", np.where(university=="Richmond", "spider", "hokie")))
+
+# array of college students' favorite foods, uncorrelated with university array.
+fave_food = np.random.choice(["pizza","sushi","falafel"], size=8932, p=[.6,.1,.3])
+
+# array of college student types, slightly correlated with university array.
+student_type = np.where(university=="UMW", np.random.choice(["partier","scholar","rebel","dropout"], size=8932, p=[.10,.45,.10,.35]),
+                np.where(university=="JMU", np.random.choice(["partier","scholar","rebel","dropout"], size=8932, p=[.40,.25,.15,.20]),
+                np.where(university=="Richmond", np.random.choice(["partier","scholar","rebel","dropout"], size=8932, p=[.35,.35,.15,.15]),
+                np.random.choice(["partier","scholar","rebel","dropout"], size=8932, p=[.30,.35,.15,.20]))))
+
+print("\nUniversity and Mascot:")
+print(pd.crosstab(university,mascot,margins=True))
+print("\nchi2: ")
+print(scipy.stats.chi2_contingency(pd.crosstab(university,mascot)))
+
+print("\nUniversity and Favorite Food:")
+print(pd.crosstab(university,fave_food,margins=True))
+print("\nchi2: ")
+print(scipy.stats.chi2_contingency(pd.crosstab(university,fave_food)))
+
+print("\nUniversity and Student Type")
+print(pd.crosstab(university,student_type,margins=True))
+print("\nchi2: ")
+print(scipy.stats.chi2_contingency(pd.crosstab(university,student_type)))
