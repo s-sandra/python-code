@@ -13,7 +13,7 @@ song_lengths = np.random.normal(3,.5,10000).clip(0.5,10)
 plays = np.random.normal(5000000,1000000,10000).clip(500000)
 
 plt.scatter(song_lengths, plays,s=2)
-# plt.show()
+plt.show()
 plt.close()
 
 def printPearsonTest(data1, data2):
@@ -69,7 +69,7 @@ for salary in range(len(taxes)):
     taxes[salary] = calculateTax(taxes[salary])
 
 plt.scatter(salaries, taxes,s=2)
-# plt.show()
+plt.show()
 plt.close()
 
 print("\nSalaries and taxes:\n" + printPearsonTest(salaries, taxes))
@@ -87,7 +87,7 @@ solution = np.linalg.solve(speeds, costs)
 damages = accident_speeds * solution[0] + solution[1] + np.random.normal(0,1000,1935)
 
 plt.scatter(accident_speeds, damages, s=2)
-# plt.show()
+plt.show()
 plt.close()
 print("\nAccident speeds and damages:\n" + printPearsonTest(accident_speeds, damages))
 
