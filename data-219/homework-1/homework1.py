@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats.stats
 import pandas as pd
+import json
 
 # length 10000, with mean of 3, standard deviation of .5, and song lengths below 0.5 and above 10 removed.
 song_lengths = np.random.normal(3,.5,10000).clip(0.5,10)
@@ -76,6 +77,7 @@ print("\nSalaries and taxes:\n" + printPearsonTest(salaries, taxes))
 # length 1935, with mean of 50 mph, standard deviation of 20, with speeds below 0, above 100 removed
 accident_speeds = np.random.normal(15,5,1935).clip(0,100)
 
+# calculates slope of the line using (50 mph, $5000) and (10 mph, $500)
 speeds = np.array([[50, 1],
                    [10, 1]])
 costs = np.array([[5000]
@@ -118,3 +120,14 @@ print("\nUniversity and Student Type")
 print(pd.crosstab(university,student_type,margins=True))
 print("\nchi2: ")
 print(scipy.stats.chi2_contingency(pd.crosstab(university,student_type)))
+
+with open("views.json","r") as reports:
+    CFPB_reports = json.load(reports)
+
+print("\nCFPB report #4 description:")
+print(CFPB_reports[3]["description"])
+
+print("\nCFPB reports with at least 4000 view counts:")
+for report in CFPB_reports:
+    if report["viewCount"] >= 4000:
+        print(report["name"])
