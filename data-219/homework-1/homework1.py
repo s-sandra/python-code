@@ -6,13 +6,16 @@ import scipy.stats.stats
 import pandas as pd
 import json
 
-# length 10000, with mean of 3, standard deviation of .5, and song lengths below 0.5 and above 10 removed.
-song_lengths = np.random.normal(3,.5,10000).clip(0.5,10)
+# length 10000, with mean of 180 secs, standard deviation of 30 secs, and song lengths below 30 and above 600 removed.
+song_lengths = np.random.normal(180,.5,10000).clip(30,600)
 
 # length 10000, with mean of 5 mil, standard deviation of 1 mil, and views below half a mil removed.
 plays = np.random.normal(5000000,1000000,10000).clip(500000)
 
 plt.scatter(song_lengths, plays,s=2)
+plt.title('Pop Song Lengths and Plays')
+plt.xlabel("Song Length (secs)")
+plt.ylabel("Plays in Pandora")
 plt.show()
 plt.close()
 
@@ -35,28 +38,28 @@ def calculateTax(salary):
     tax = 0
     bracket_sum = 0
 
-    if salary > ten_percent:
+    if salary >= ten_percent:
         bracket_sum += ten_percent
         tax += ten_percent * .10
     else:
         tax += (salary - bracket_sum) * .10
         return tax
 
-    if salary > fifteen_percent:
+    if salary >= fifteen_percent + bracket_sum:
         bracket_sum += fifteen_percent
         tax += fifteen_percent * .15
     else:
         tax += (salary - bracket_sum) * .15
         return tax
 
-    if salary > twenty_five_percent:
+    if salary >= twenty_five_percent + bracket_sum:
         bracket_sum += twenty_five_percent
         tax += twenty_five_percent * .25
     else:
         tax += (salary - bracket_sum) * .25
         return tax
 
-    if salary > twenty_eight_percent:
+    if salary >= twenty_eight_percent + bracket_sum:
         tax += twenty_eight_percent * .28
     else:
         tax += (salary - bracket_sum) * .28
@@ -69,24 +72,24 @@ for salary in range(len(taxes)):
     taxes[salary] = calculateTax(taxes[salary])
 
 plt.scatter(salaries, taxes,s=2)
+plt.title('Fredericksburg Salaries and Taxes')
+plt.xlabel("Salary (dollars)")
+plt.ylabel("Tax (dollars)")
 plt.show()
 plt.close()
 
 print("\nSalaries and taxes:\n" + printPearsonTest(salaries, taxes))
 
-# length 1935, with mean of 50 mph, standard deviation of 20, with speeds below 0, above 100 removed
+# length 1935, with mean of 15 mph, standard deviation of 5, and speeds below 0, above 100 removed
 accident_speeds = np.random.normal(15,5,1935).clip(0,100)
 
-# calculates slope of the line using (50 mph, $5000) and (10 mph, $500)
-speeds = np.array([[50, 1],
-                   [10, 1]])
-costs = np.array([[5000]
-                 , [500]])
-solution = np.linalg.solve(speeds, costs)
-
-damages = accident_speeds * solution[0] + solution[1] + np.random.normal(0,1000,1935)
+# length 1935, scaled according to ratio between common damage and speed, with added noise.
+damages = accident_speeds * (1000 / 15) + np.random.normal(0,500,1935)
 
 plt.scatter(accident_speeds, damages, s=2)
+plt.title('VA Car Accident Speeds and Repair Costs')
+plt.xlabel("Speed (mph)")
+plt.ylabel("Repair Cost (dollars)")
 plt.show()
 plt.close()
 print("\nAccident speeds and damages:\n" + printPearsonTest(accident_speeds, damages))
