@@ -6,11 +6,11 @@ import scipy.stats.stats
 import pandas as pd
 import json
 
-# length 10000, with mean of 180 secs, standard deviation of 30 secs, and song lengths below 30 and above 600 removed.
-song_lengths = np.random.normal(180,.5,10000).clip(30,600)
+# length 10000, with mean of 180 secs, standard deviation of 30 secs
+song_lengths = np.random.normal(180,30,10000)
 
-# length 10000, with mean of 5 mil, standard deviation of 1 mil, and views below half a mil removed.
-plays = np.random.normal(5000000,1000000,10000).clip(500000)
+# length 10000, with mean of 5 mil, standard deviation of 1 mil
+plays = np.random.normal(5000000,1000000,10000)
 
 plt.scatter(song_lengths, plays,s=2)
 plt.title('Pop Song Lengths and Plays')
@@ -25,8 +25,8 @@ def printPearsonTest(data1, data2):
 
 print("Song length and plays:\n" + printPearsonTest(song_lengths, plays))
 
-# length 5093, with mean of 45,000, standard deviation of 15,000, and salaries below 0, above 120,000 removed
-salaries = np.random.normal(45000,15000,5093).clip(0,120000)
+# length 5093, with mean of 45,000, standard deviation of 15,000
+salaries = np.random.normal(45000,15000,5093)
 
 def calculateTax(salary):
 
@@ -67,29 +67,28 @@ def calculateTax(salary):
 
     return tax
 
-taxes = salaries.copy()
-for salary in range(len(taxes)):
-    taxes[salary] = calculateTax(taxes[salary])
+vfunc = np.vectorize(calculateTax)
+taxes = vfunc(salaries)
 
 plt.scatter(salaries, taxes,s=2)
 plt.title('Fredericksburg Salaries and Taxes')
-plt.xlabel("Salary (dollars)")
-plt.ylabel("Tax (dollars)")
+plt.xlabel("Salary ($)")
+plt.ylabel("Tax ($)")
 plt.show()
 plt.close()
 
 print("\nSalaries and taxes:\n" + printPearsonTest(salaries, taxes))
 
-# length 1935, with mean of 15 mph, standard deviation of 5, and speeds below 0, above 100 removed
-accident_speeds = np.random.normal(15,5,1935).clip(0,100)
+# length 1935, with mean of 15 mph, standard deviation of 5
+accident_speeds = np.random.normal(15,5,1935)
 
-# length 1935, scaled according to ratio between common damage and speed, with added noise.
-damages = accident_speeds * (1000 / 15) + np.random.normal(0,500,1935)
+# length 1935, scaled according to ratio between common cost and speed, with added noise.
+damages = accident_speeds * (8000 / 15) + np.random.normal(0,1000,1935)
 
 plt.scatter(accident_speeds, damages, s=2)
 plt.title('VA Car Accident Speeds and Repair Costs')
-plt.xlabel("Speed (mph)")
-plt.ylabel("Repair Cost (dollars)")
+plt.xlabel("Speed of Fastest Vehicle (mph)")
+plt.ylabel("Repair Cost for Involved Vehicles ($)")
 plt.show()
 plt.close()
 print("\nAccident speeds and damages:\n" + printPearsonTest(accident_speeds, damages))
