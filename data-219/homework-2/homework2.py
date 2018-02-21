@@ -5,12 +5,10 @@ everything = pd.read_csv("activity.csv")
 students = everything[["name","year","major","school","creds"]]
 gpas = pd.melt(everything, ["name"], var_name="year", value_vars=["GPAFr","GPASo","GPAJr","GPASr"])
 
+# reformats values for GPA and year columns
 gpas = gpas.dropna()
-gpas = gpas.replace("GPAFr","Fr")
-gpas = gpas.replace("GPASo", "So")
-gpas = gpas.replace("GPAJr", "Jr")
-gpas = gpas.replace("GPASr", "Sr")
 gpas = gpas.rename(columns = {"value":"GPA"})
+gpas.year = gpas.year.str[3:]
 
 schools = everything[["school","type","mascot"]]
 del everything
@@ -25,3 +23,7 @@ for school in urban_schools:
 # removes duplicated students
 students = students.drop_duplicates(["name"])
 print("number of students: ", len(students))
+
+# removes duplicated gpas
+gpas = gpas.drop_duplicates()
+print("number of end-of-year GPAs: ", len(np.where(gpas.year == "Sr")[0]))
