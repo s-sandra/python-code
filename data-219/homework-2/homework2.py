@@ -26,4 +26,11 @@ print("number of students: ", len(students))
 
 # removes duplicated gpas
 gpas = gpas.drop_duplicates()
-print("number of end-of-year GPAs: ", len(np.where(gpas.year == "Sr")[0]))
+senior_gpas = np.where(gpas.year == "Sr")[0]
+print("number of end-of-year GPAs: ", len(senior_gpas))
+
+sum_gpa = 0
+for gpa in senior_gpas:
+    sum_gpa += gpas.iloc[gpa].GPA
+avg_senior_gpa = sum_gpa / len(senior_gpas)
+print("avg senior gpa: ", avg_senior_gpa)
