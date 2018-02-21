@@ -21,4 +21,7 @@ schools["area"] = np.repeat("rural", len(schools))
 urban_schools = np.where((schools.school == "UMW") | (schools.school == "Richmond") | (schools.school == "UVA"))
 for school in urban_schools:
     schools.set_value(school, "area", "urban")
-print(schools)
+
+# removes duplicated students
+students = students.drop_duplicates(["name"])
+print("number of students: ", len(students))
