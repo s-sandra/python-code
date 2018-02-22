@@ -30,11 +30,13 @@ gpas = gpas.drop_duplicates()
 senior_gpas = np.where(gpas.year == "Sr")[0]
 print("number of end-of-year GPAs: ", len(senior_gpas))
 
-sum_gpa = 0
-for gpa in senior_gpas:
-    sum_gpa += gpas.iloc[gpa].GPA
-avg_senior_gpa = sum_gpa / len(senior_gpas)
-print("avg senior gpa: ", avg_senior_gpa)
+def calculateAvgGpa(gpas_list):
+    sum_gpa = 0
+    for gpa in gpas_list:
+        sum_gpa += gpas.iloc[gpa].GPA
+    return sum_gpa / len(gpas_list)
+
+print("avg senior gpa: ", calculateAvgGpa(senior_gpas))
 
 students_and_schools = pd.merge(students, schools, on="school")
 students_and_schools = students_and_schools.drop_duplicates()
@@ -42,3 +44,12 @@ rural_students = np.where(students_and_schools.area == "rural")
 urban_students = np.where(students_and_schools.area == "urban")
 print("number of urban students: ", len(urban_students[0]))
 print("number of rural students: ", len(rural_students[0]))
+
+students_by_area = students_and_schools[["name","area"]]
+gpa_by_area = pd.merge(students_by_area, gpas, on="name")
+gpa_by_area = gpa_by_area[gpa_by_area.year == "Fr"] # only considers freshman gpas.
+
+rural_gpa = np.where(gpa_by_area.area == "rural")
+urban_gpa = np.where(gpa_by_area.area == "urban")
+print("avg rural freshman gpa: ", calculateAvgGpa(rural_gpa[0]))
+print("avg urban freshman gpa: ", calculateAvgGpa(urban_gpa[0]))
