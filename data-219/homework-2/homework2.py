@@ -30,16 +30,16 @@ print("5. number of students: ", len(students))
 
 # removes duplicated gpas
 gpas = gpas.drop_duplicates()
-senior_gpas = np.where(gpas.year == "Sr")[0]
+senior_gpas = gpas[gpas.year == "Sr"]
 print("6. number of end-of-year GPAs: ", len(senior_gpas))
 
 def calculateAvgGpa(gpas_list):
     sum_gpa = 0
     for gpa in gpas_list:
-        sum_gpa += gpas.iloc[gpa].GPA
+        sum_gpa += gpa
     return sum_gpa / len(gpas_list)
 
-print("7. avg senior gpa: ", calculateAvgGpa(senior_gpas))
+print("7. avg senior gpa: ", calculateAvgGpa(senior_gpas.GPA))
 
 students_and_schools = pd.merge(students, schools, on="school")
 students_and_schools = students_and_schools.drop_duplicates()
@@ -52,16 +52,25 @@ students_by_area = students_and_schools[["name","area"]]
 gpa_by_area = pd.merge(students_by_area, gpas, on="name")
 gpa_by_area = gpa_by_area[gpa_by_area.year == "Fr"] # only considers freshman gpas.
 
-rural_gpa = np.where(gpa_by_area.area == "rural")
-urban_gpa = np.where(gpa_by_area.area == "urban")
-print("9. a) avg rural freshman gpa: ", calculateAvgGpa(rural_gpa[0]))
-print("9. b) avg urban freshman gpa: ", calculateAvgGpa(urban_gpa[0]))
+rural_gpa = gpa_by_area[gpa_by_area.area == "rural"]
+urban_gpa = gpa_by_area[gpa_by_area.area == "urban"]
+print("9. a) avg rural freshman gpa: ", calculateAvgGpa(rural_gpa.GPA))
+print("9. b) avg urban freshman gpa: ", calculateAvgGpa(urban_gpa.GPA))
 
 freshman_vs_non_freshman = gpas
 freshman_vs_non_freshman.year = np.where(gpas.year == "Fr", "Freshman", "Non-Freshman")
 freshman_vs_non_freshman.boxplot(by="year", notch=True)
 plt.title("Freshman vs Non-Freshman GPA")
 plt.xlabel("Year")
+plt.ylabel("GPA")
+plt.suptitle("")
+plt.show()
+plt.close()
+
+senior_major_gpa = pd.merge(senior_gpas,students, on="name")[["GPA","major"]]
+senior_major_gpa.boxplot(by="major", notch=True)
+plt.title("GPA by Major")
+plt.xlabel("Major")
 plt.ylabel("GPA")
 plt.suptitle("")
 plt.show()
