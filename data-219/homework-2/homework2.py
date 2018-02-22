@@ -32,34 +32,21 @@ print("5. number of students: ", len(students))
 # removes duplicated gpas
 gpas = gpas.drop_duplicates()
 senior_gpas = gpas[gpas.year == "Sr"]
+
 print("6. number of end-of-year GPAs: ", len(senior_gpas))
-
-def calculateAvgGpa(gpas_list):
-    sum_gpa = 0
-    for gpa in gpas_list:
-        sum_gpa += gpa
-    return sum_gpa / len(gpas_list)
-
-print("7. avg senior gpa: ", calculateAvgGpa(senior_gpas.GPA))
+print("7. avg senior gpa: ", gpas.groupby("year").GPA.mean().Sr)
 
 students_and_schools = pd.merge(students, schools, on="school")
 students_and_schools = students_and_schools.drop_duplicates()
-rural_students = np.where(students_and_schools.area == "rural")
-urban_students = np.where(students_and_schools.area == "urban")
-print("8. a) number of urban students: ", len(urban_students[0]))
-print("8. b) number of rural students: ", len(rural_students[0]))
+print("8. Number of rural and urban students:\n", students_and_schools.area.value_counts())
 
 students_by_area = students_and_schools[["name","area"]]
 gpa_by_area = pd.merge(students_by_area, gpas, on="name")
 gpa_by_area = gpa_by_area[gpa_by_area.year == "Fr"] # only considers freshman gpas.
-
-rural_gpa = gpa_by_area[gpa_by_area.area == "rural"]
-urban_gpa = gpa_by_area[gpa_by_area.area == "urban"]
-print("9. a) avg rural freshman gpa: ", calculateAvgGpa(rural_gpa.GPA))
-print("9. b) avg urban freshman gpa: ", calculateAvgGpa(urban_gpa.GPA))
+print("9. avg rural and urban freshman gpa:\n", gpa_by_area.groupby("area").GPA.mean())
 
 freshman_vs_non_freshman = gpas
-freshman_vs_non_freshman.year = np.where(gpas.year == "Fr", "Freshman", "Non-Freshman")
+freshman_vs_non_freshman.year = np.where(gpas.year == "Fr", "Freshman", "Non-Freshman") # groups students into freshman vs non-freshman
 freshman_vs_non_freshman.boxplot(by="year", notch=True)
 plt.title("Freshman vs Non-Freshman GPA")
 plt.xlabel("Year")
@@ -68,8 +55,8 @@ plt.suptitle("")
 plt.show()
 plt.close()
 
-senior_gpa = pd.merge(senior_gpas,students, on="name")
-senior_gpa[["GPA","major"]].boxplot(by="major", notch=True)
+senior_gpa = pd.merge(senior_gpas, students, on="name")
+senior_gpa[["GPA", "major"]].boxplot(by="major", notch=True)
 plt.title("Senior GPA by Major")
 plt.xlabel("Major")
 plt.ylabel("GPA")
