@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import statsmodels.nonparametric.smoothers_lowess
 
 everything = pd.read_csv("activity.csv")
 students = everything[["name","year","major","school","creds"]]
@@ -83,3 +84,15 @@ plt.ylabel("GPA")
 plt.suptitle("")
 plt.show()
 plt.close()
+
+gpa_and_creds = pd.merge(students, gpas, on="name")[["GPA", "creds"]]
+gpa_and_creds.sort_values(by="creds")
+plt.scatter(gpa_and_creds.creds, gpa_and_creds.GPA, s=2)
+plt.title("GPA and Number of Credits")
+plt.xlabel("Number of Credits")
+plt.ylabel("GPA")
+
+# plots loess line, with alpha of 1/4
+lowess = statsmodels.nonparametric.smoothers_lowess.lowess(gpa_and_creds.GPA, gpa_and_creds.creds,frac=1/4)
+plt.plot(lowess[:,0],lowess[:,1],color="red")
+plt.show()
