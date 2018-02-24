@@ -17,11 +17,10 @@ gpas.year = gpas.year.str[3:] # chops off GPA in values of year column
 # removes duplicated schools, adds area column
 schools = everything[["school","type","mascot"]]
 schools = schools.drop_duplicates()
-schools["area"] = np.repeat("rural", len(schools))
 del everything
 
 # Sets UVA, Richmond and UMW area column to urban, all others to rural.
-schools.area = np.where((schools.school == "UMW") | (schools.school == "Richmond") | (schools.school == "UVA"), "urban", "rural")
+schools["area"] = np.where((schools.school == "UMW") | (schools.school == "Richmond") | (schools.school == "UVA"), "urban", "rural")
 
 # removes duplicated students
 students = students.drop_duplicates(["name"])
