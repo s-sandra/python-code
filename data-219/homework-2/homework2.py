@@ -20,10 +20,8 @@ schools = schools.drop_duplicates()
 schools["area"] = np.repeat("rural", len(schools))
 del everything
 
-# UVA, Richmond and UMW all urban.
-urban_schools = np.where((schools.school == "UMW") | (schools.school == "Richmond") | (schools.school == "UVA"))
-for school in urban_schools[0]:
-    schools.set_value(school, "area", "urban")
+# Sets UVA, Richmond and UMW area column to urban, all others to rural.
+schools.area = np.where((schools.school == "UMW") | (schools.school == "Richmond") | (schools.school == "UVA"), "urban", "rural")
 
 # removes duplicated students
 students = students.drop_duplicates(["name"])
