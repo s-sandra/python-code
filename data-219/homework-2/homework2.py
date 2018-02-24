@@ -33,8 +33,8 @@ print("5. number of students: ", len(students))
 gpas = gpas.drop_duplicates()
 senior_gpas = gpas[gpas.year == "Sr"]
 
-print("6. number of end-of-year GPAs: ", len(senior_gpas))
-print("7. avg senior gpa: ", gpas.groupby("year").GPA.mean().Sr)
+print("6. number of end-of-year GPAs: ", len(gpas))
+print("7. avg end-of-year gpa: ", gpas.GPA.mean())
 
 students_and_schools = pd.merge(students, schools, on="school")
 students_and_schools = students_and_schools.drop_duplicates()
