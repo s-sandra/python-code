@@ -23,11 +23,9 @@ del everything
 schools["area"] = np.where((schools.school == "UMW") | (schools.school == "Richmond") | (schools.school == "UVA"), "urban", "rural")
 
 # removes duplicated students
-students = students.drop_duplicates(["name"])
 print("5. number of students: ", len(students))
 
 # removes duplicated gpas
-gpas = gpas.drop_duplicates()
 senior_gpas = gpas[gpas.year == "Sr"]
 
 print("6. number of end-of-year GPAs: ", len(gpas))
