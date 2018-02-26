@@ -22,10 +22,8 @@ del everything
 # Sets UVA, Richmond and UMW area column to urban, all others to rural.
 schools["area"] = np.where((schools.school == "UMW") | (schools.school == "Richmond") | (schools.school == "UVA"), "urban", "rural")
 
-# removes duplicated students
 print("5. number of students: ", len(students))
 
-# removes duplicated gpas
 senior_gpas = gpas[gpas.year == "Sr"]
 
 print("6. number of end-of-year GPAs: ", len(gpas))
@@ -43,6 +41,7 @@ print("9. avg rural and urban freshman gpa:\n", gpa_by_area.groupby("area").GPA.
 freshman_vs_non_freshman = gpas
 freshman_vs_non_freshman.year = np.where(gpas.year == "Fr", "Freshman", "Non-Freshman") # groups students into freshman vs non-freshman
 freshman_vs_non_freshman.boxplot(by="year", notch=True)
+print("10. There is a statistically significant difference between the average GPA of freshman and non-freshman.")
 plt.title("Freshman vs Non-Freshman GPA")
 plt.xlabel("Year")
 plt.ylabel("GPA")
@@ -50,17 +49,21 @@ plt.suptitle("")
 plt.show()
 plt.close()
 
-senior_gpa = pd.merge(senior_gpas, students, on="name")
-senior_gpa[["GPA", "major"]].boxplot(by="major", notch=True)
-plt.title("Senior GPA by Major")
+gpas_and_students = pd.merge(gpas, students, on="name")
+print("11. There is a significant difference between the GPAs of certain majors. For example, CPSC versus ECON GPAs differ, as well as\n "
+      "ARTH versus BAUD. However, there is no significant difference between CPSC and ENGL GPAs")
+gpas_and_students[["GPA", "major"]].boxplot(by="major", notch=True)
+plt.title("End of Year GPA by Major")
 plt.xlabel("Major")
 plt.ylabel("GPA")
 plt.suptitle("")
 plt.show()
 plt.close()
 
-senior_gpa[["GPA", "school"]].boxplot(by="school", notch=True)
-plt.title("Senior GPA by School")
+gpas_and_students[["GPA", "school"]].boxplot(by="school", notch=True)
+print("12. There is a significant difference between the end-of-year GPAs of certain schools. For example, Richmond versus JMU GPAs differ\n"
+      "as well as UVA versus VT. However, there is no significant difference between GPAs from CNU and JMU.")
+plt.title("End of Year GPA by School")
 plt.xlabel("School")
 plt.ylabel("GPA")
 plt.suptitle("")
@@ -70,7 +73,7 @@ plt.close()
 gpa_and_creds = pd.merge(students, gpas, on="name")[["GPA", "creds"]]
 gpa_and_creds.sort_values(by="creds")
 plt.scatter(gpa_and_creds.creds, gpa_and_creds.GPA, s=2)
-plt.title("GPA and Number of Credits")
+plt.title("End-of-Year GPA and Number of Credits")
 plt.xlabel("Number of Credits")
 plt.ylabel("GPA")
 
