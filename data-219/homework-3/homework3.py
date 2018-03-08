@@ -2,6 +2,7 @@ import json
 import pandas as pd
 import scipy.stats
 import matplotlib.pyplot as plt
+import statsmodels.nonparametric.smoothers_lowess
 
 # loads meterorite data into nasa_data object
 data = open("meteorites.json", encoding="utf8")
@@ -48,3 +49,15 @@ plt.xlabel("Mass (lbs)")
 plt.ylabel("Probability Density")
 plt.show()
 plt.close()
+
+# creates semilog scatterplot for year vs. mass
+plt.scatter(year_and_mass.year, year_and_mass.mass, s=2)
+plt.yscale("log")
+plt.title("Meteorite Mass Over Time")
+plt.xlabel("Year")
+plt.ylabel("Mass (lbs)")
+
+# plots loess line, with alpha of 1/3
+lowess = statsmodels.nonparametric.smoothers_lowess.lowess(year_and_mass.mass, year_and_mass.year, frac=1/3)
+plt.plot(lowess[:,0],lowess[:,1],color="red")
+plt.show()
