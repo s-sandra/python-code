@@ -51,7 +51,7 @@ plt.close()
 
 gpas_and_students = pd.merge(gpas, students, on="name")
 print("11. There is a significant difference between the GPAs of certain majors. For example, CPSC versus ECON GPAs differ, as well as\n "
-      "ARTH versus BAUD. However, there is no significant difference between CPSC and ENGL GPAs")
+      "ECON versus ENGL. However, there is no significant difference between CPSC and ENGL GPAs")
 gpas_and_students[["GPA", "major"]].boxplot(by="major", notch=True)
 plt.title("End of Year GPA by Major")
 plt.xlabel("Major")
@@ -78,6 +78,6 @@ plt.xlabel("Number of Credits")
 plt.ylabel("GPA")
 
 # plots loess line, with alpha of 1/4
-lowess = statsmodels.nonparametric.smoothers_lowess.lowess(gpa_and_creds.GPA, gpa_and_creds.creds,frac=1/4)
+lowess = statsmodels.nonparametric.smoothers_lowess.lowess(gpa_and_creds.GPA, gpa_and_creds.creds,frac=1/3)
 plt.plot(lowess[:,0],lowess[:,1],color="red")
 plt.show()
