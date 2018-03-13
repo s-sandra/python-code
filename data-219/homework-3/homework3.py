@@ -30,9 +30,9 @@ year_and_mass.year = year_and_mass.year.astype(int)
 year_and_mass.mass = year_and_mass.mass.astype(float)
 year_and_mass.mass = round(year_and_mass.mass / 453.59237, 3)
 
-# calculates and plots KDE for years, with bandwidth of 3
+# calculates and plots KDE for years, with bandwidth of 2
 year_and_mass = year_and_mass.sort_values(by="year")
-kde = scipy.stats.gaussian_kde(year_and_mass.year, bw_method = 3)
+kde = scipy.stats.gaussian_kde(year_and_mass.year, bw_method = 2)
 plt.plot(year_and_mass.year, kde(year_and_mass.year))
 plt.title("Distribution of Meteorite Landing Years")
 plt.xlabel("Year")
@@ -40,9 +40,9 @@ plt.ylabel("Probability Density")
 plt.show()
 plt.close()
 
-# calculates and plots KDE for mass, with bandwidth of 3
+# calculates and plots KDE for mass, with bandwidth of 2
 year_and_mass = year_and_mass.sort_values(by="mass")
-kde = scipy.stats.gaussian_kde(year_and_mass.mass, bw_method = 3)
+kde = scipy.stats.gaussian_kde(year_and_mass.mass, bw_method = 2)
 plt.plot(year_and_mass.mass, kde(year_and_mass.mass))
 plt.title("Distribution of Meteorite Mass")
 plt.xlabel("Mass (lbs)")
@@ -50,8 +50,17 @@ plt.ylabel("Probability Density")
 plt.show()
 plt.close()
 
+# tests for exponential relationship between mass and frequency
+plt.plot(year_and_mass.mass, kde(year_and_mass.mass))
+plt.title("Distribution of Meteorite Mass")
+plt.xlabel("Mass (lbs)")
+plt.ylabel("Probability Density")
+plt.yscale("log")
+plt.show()
+plt.close()
+
 # creates semilog scatterplot for year vs. mass
-plt.scatter(year_and_mass.year, year_and_mass.mass, s=2)
+plt.plot(year_and_mass.year, year_and_mass.mass, marker="o", linewidth=0, ms=1)
 plt.yscale("log")
 plt.title("Meteorite Mass Over Time")
 plt.xlabel("Year")
@@ -66,7 +75,7 @@ year_and_mass_correlation = scipy.stats.stats.pearsonr(year_and_mass.year, year_
 
 # creates semilog plot for years from 1750 - present vs. mass
 year_and_mass = year_and_mass[year_and_mass.year > 1750]
-plt.scatter(year_and_mass.year, year_and_mass.mass, s=2)
+plt.plot(year_and_mass.year, year_and_mass.mass, marker="o", linewidth=0, ms=1)
 plt.yscale("log")
 plt.title("Meteorite Mass Over Time")
 plt.xlabel("Year")
