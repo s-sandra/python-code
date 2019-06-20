@@ -8,7 +8,6 @@ import json
 import numpy as np
 
 api_key_1 = "blah"
-api_key_2 = "blah"
 rows = []
 cities = ["D.C.", "San+Francisco", "Baltimore", "Portland", "Chicago", "Houston", "New+York+City", "Phoenix",
           "Las+Vegas", "Seattle"]
